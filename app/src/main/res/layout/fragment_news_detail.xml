@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/nd_image"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/image_placeholder" />
+
+
+    <TextView
+        android:id="@+id/nd_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="0dp"
+        android:textColor="@color/black"
+        android:textFontWeight="200"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/nd_image"
+        tools:text="Author" />
+
+    <TextView
+        android:id="@+id/nd_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:textFontWeight="200"
+        app:layout_constraintTop_toBottomOf="@id/nd_author"
+        tools:ignore="RtlHardcoded"
+        tools:text="date of publication" />
+
+    <TextView
+        android:id="@+id/nd_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/black"
+        android:textFontWeight="200"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/nd_date"
+        tools:ignore="RtlHardcoded"
+        tools:text="Title of the news" />
+
+    <TextView
+        android:id="@+id/nd_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="16dp"
+        android:textFontWeight="200"
+        app:layout_constraintTop_toBottomOf="@id/nd_title"
+        tools:ignore="RtlHardcoded"
+        tools:text="Description of the News  is simply dummy text of the printing and typesetting industry. Lorem" />
+
+    <FrameLayout
+        android:id="@+id/nd_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/rectangular_border"
+        app:layout_constraintTop_toBottomOf="@id/nd_description" />
+
+    <TextView
+        android:id="@+id/nd_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="16dp"
+        android:textFontWeight="200"
+        app:layout_constraintTop_toBottomOf="@id/nd_divider"
+        tools:ignore="RtlHardcoded"
+        tools:text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32." />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

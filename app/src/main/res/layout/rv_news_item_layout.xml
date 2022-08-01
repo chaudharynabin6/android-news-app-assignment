@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangular_border"
+    android:padding="8dp">
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/rv_image"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circular"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/image_placeholder" />
+
+    <TextView
+        android:id="@+id/rv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:textColor="@color/black"
+        android:textFontWeight="300"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@id/rv_image"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rv_image"
+        tools:text="Title of the News  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " />
+
+    <TextView
+        android:id="@+id/rv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:padding="8dp"
+        android:textFontWeight="400"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="@id/rv_title"
+        app:layout_constraintRight_toRightOf="@id/rv_title"
+        app:layout_constraintTop_toBottomOf="@id/rv_title"
+        tools:text="Description of the News  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " />
+
+    <TextView
+        android:id="@+id/rv_author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textFontWeight="100"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/rv_save_button"
+        app:layout_constraintLeft_toLeftOf="@id/rv_image"
+        app:layout_constraintRight_toLeftOf="@id/rv_save_button"
+        app:layout_constraintTop_toTopOf="@id/rv_save_button"
+        tools:text="Author of the News" />
+
+    <ImageButton
+        android:id="@+id/rv_save_button"
+        android:layout_width="12dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_baseline_bookmark_24"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_description"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
