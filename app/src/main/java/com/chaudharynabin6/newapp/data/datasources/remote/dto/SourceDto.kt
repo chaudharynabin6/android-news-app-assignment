@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Source(
+data class SourceDto(
     @Json(name = "id")
     val id: String?, // the-times-of-india
     @Json(name = "name")

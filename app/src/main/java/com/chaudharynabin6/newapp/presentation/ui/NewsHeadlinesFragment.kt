@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
+import com.chaudharynabin6.newapp.data.mapper.toArticleEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,6 +23,10 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         viewLifecycleOwner.lifecycleScope.launch {
             val data =  newsAPI.getNews(q = "tesla")
             Log.e("news api",data.totalResults.toString())
+            val articles = data.articles.mapNotNull {
+                it.toArticleEntity()
+            }
+            Timber.e("articles : $articles")
         }
     }
 }

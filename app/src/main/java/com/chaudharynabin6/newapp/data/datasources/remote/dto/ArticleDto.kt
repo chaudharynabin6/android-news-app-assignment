@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Article(
+data class ArticleDto(
     @Json(name = "author")
     val author: String?, // Javier Gómara
     @Json(name = "content")
@@ -15,7 +15,7 @@ data class Article(
     @Json(name = "publishedAt")
     val publishedAt: String, // 2022-08-01T11:59:25Z
     @Json(name = "source")
-    val source: Source,
+    val source: SourceDto,
     @Json(name = "title")
     val title: String, // Aumenta el número de reservas de coches eléctricos en General Motors: comienza el cambio
     @Json(name = "url")
