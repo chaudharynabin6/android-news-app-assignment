@@ -109,4 +109,7 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Flow to  LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
 }
