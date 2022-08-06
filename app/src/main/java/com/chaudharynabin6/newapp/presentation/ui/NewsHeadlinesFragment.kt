@@ -49,6 +49,10 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         binding.nhRvArticle.let {
             it.adapter = adapter
             it.layoutManager = LinearLayoutManager(requireContext())
+
+//            https://stackoverflow.com/questions/29331075/recyclerview-blinking-after-notifydatasetchanged
+//            fixing the flicking of recycler view
+            it.itemAnimator?.changeDuration = 0
         }
         adapter.setOnItemClickListener {
             viewModel.sendEvent(
