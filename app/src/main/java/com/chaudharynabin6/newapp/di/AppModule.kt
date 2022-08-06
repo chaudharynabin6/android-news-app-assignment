@@ -3,6 +3,10 @@ package com.chaudharynabin6.newapp.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.request.RequestOptions
+import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
 import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
 import com.squareup.moshi.Moshi
@@ -12,6 +16,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -48,5 +54,24 @@ object AppModule {
             NewsDataBase::class.java,
             "news.db",
         ).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGlideInstance(
+        @ApplicationContext context: Context,
+    ): RequestManager {
+        return Glide.with(context).setDefaultRequestOptions(
+            RequestOptions()
+                .placeholder(
+                    R.drawable.image_placeholder
+                )
+                .error(R.drawable.image_placeholder)
+        )
+    }
+
+    @Provides
+    fun providesDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Default
     }
 }
