@@ -9,17 +9,16 @@ fun ArticleDto.toArticleEntity(): ArticleEntity? {
 //    https://stackoverflow.com/questions/4525850/java-convert-iso-8601-2010-12-16t133350-513852z-to-date-object
     val instant = Instant.parse(publishedAt)
     val date = Date.from(instant)
-    val author = author ?: return null
     val urlToImage = urlToImage ?: return null
     return ArticleEntity(
         id = this.hashCode(),
-        author = author,
-        content = content,
-        description = description,
-        title = title,
-        url = url,
+        author = author ?: "",
+        content = content ?: "",
+        description = description ?: "",
+        title = title ?: "",
+        url = url ?: "",
         urlToImage = urlToImage,
-        source = source.name,
-        publishedAt = date
+        source = source?.name ?: "",
+        publishedAt = date ?: return null
     )
 }

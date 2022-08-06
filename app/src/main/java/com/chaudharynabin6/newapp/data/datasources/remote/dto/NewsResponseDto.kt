@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class NewsResponseDto(
     @Json(name = "articles")
-    val articles: List<ArticleDto>,
+    val articles: List<ArticleDto>?,
     @Json(name = "status")
-    val status: String, // ok
+    val status: String?, // ok
     @Json(name = "totalResults")
-    val totalResults: Int // 15314
+    val totalResults: Int? // 15314
 )

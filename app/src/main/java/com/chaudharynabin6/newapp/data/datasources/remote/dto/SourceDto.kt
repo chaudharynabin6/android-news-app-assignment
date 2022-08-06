@@ -9,5 +9,5 @@ data class SourceDto(
     @Json(name = "id")
     val id: String?, // the-times-of-india
     @Json(name = "name")
-    val name: String // Hibridosyelectricos.com
+    val name: String? // Hibridosyelectricos.com
 )
