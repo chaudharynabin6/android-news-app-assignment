@@ -1,11 +1,14 @@
 package com.chaudharynabin6.newapp.presentation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.RvArticleItemLayoutBinding
 import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import javax.inject.Inject
@@ -39,10 +42,7 @@ class ArticleAdapter @Inject constructor(
 
 //            button setup
             rvSaveButton.setOnClickListener {
-
-                onSavedButtonClickListener?.let { click ->
-                    click(article)
-                }
+                showPopupMenu(it, article)
 //                it.isSelected = true : error because recycle view is recycled
 
             }
@@ -103,5 +103,30 @@ class ArticleAdapter @Inject constructor(
         onItemClickListener = listener
     }
 
+
+
+    private fun showPopupMenu(view: View, article: ArticleEntity) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.inflate(R.menu.popup_menu_rv_article_item)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            val value = menuItem?.let {
+                when (it.itemId) {
+                    R.id.popup_action_save -> {
+
+                        onSavedButtonClickListener?.let { click ->
+                            click(article)
+                        }
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            return@setOnMenuItemClickListener value ?: false
+
+
+        }
+        popupMenu.show()
+    }
 
 }

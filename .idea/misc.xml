@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3205" />
         <entry key="app/src/main/res/drawable/bottom_nav_selector.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/button_save_selector.xml" value="0.1625" />
+        <entry key="app/src/main/res/drawable/ic_item_options.xml" value="0.3045" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3205" />
         <entry key="app/src/main/res/drawable/ic_saved.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/ic_saved_nav.xml" value="0.3045" />
@@ -24,6 +25,7 @@
         <entry key="app/src/main/res/layout/rv_news_item_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_saved_title_item.xml" value="0.32708333333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/popup_menu_rv_article_item.xml" value="0.32708333333333334" />
       </map>
     </option>
   </component>
