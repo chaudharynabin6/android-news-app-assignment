@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/layout/rv_article_item_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_news_item_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_saved_title_item.xml" value="0.32708333333333334" />
+        <entry key="app/src/main/res/menu/action_menu_fragment_news_headlines.xml" value="0.32708333333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/popup_menu_rv_article_item.xml" value="0.32708333333333334" />
       </map>

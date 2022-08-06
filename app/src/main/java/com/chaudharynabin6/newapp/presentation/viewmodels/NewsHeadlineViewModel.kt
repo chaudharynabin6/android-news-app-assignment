@@ -7,13 +7,13 @@ import com.chaudharynabin6.newapp.domain.entity.TitleEntity
 import com.chaudharynabin6.newapp.domain.repository.NewsRepository
 import com.chaudharynabin6.newapp.other.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 //https://proandroiddev.com/no-more-livedata-in-your-repository-there-are-better-options-25a7557b0730
@@ -37,23 +37,33 @@ class NewsHeadlineViewModel @Inject constructor(
         sendEvent(NewsHeadlineViewModelEvents.SearchNews("tesla"))
     }
 
+    var job: Job? = null
     private fun searchNews(query: String) {
         viewModelScope.launch(dispatcher) {
-            repository.getArticles(query = query).collect() { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        resource.data?.let {
-                            _articleList.emit(it)
+
+            job?.cancel()
+
+
+            job = viewModelScope.launch(dispatcher) {
+                delay(300)
+                Timber.e("job")
+                repository.getArticles(query = query).collect() { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            resource.data?.let {
+                                _articleList.emit(it)
+                            }
                         }
-                    }
-                    is Resource.Error -> {
-                        _errorMessage.emit(resource.message ?: "failed to get news")
-                    }
-                    is Resource.Loading -> {
-                        _isLoading.emit(resource.isLoading)
+                        is Resource.Error -> {
+                            _errorMessage.emit(resource.message ?: "failed to get news")
+                        }
+                        is Resource.Loading -> {
+                            _isLoading.emit(resource.isLoading)
+                        }
                     }
                 }
             }
+
 
         }
     }

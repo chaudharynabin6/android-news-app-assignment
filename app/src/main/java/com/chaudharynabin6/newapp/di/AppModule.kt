@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
@@ -67,6 +68,7 @@ object AppModule {
                     R.drawable.image_placeholder
                 )
                 .error(R.drawable.image_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
         )
     }
 

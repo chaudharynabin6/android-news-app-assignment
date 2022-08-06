@@ -1,11 +1,15 @@
 package com.chaudharynabin6.newapp.presentation.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaudharynabin6.newapp.R
@@ -17,6 +21,7 @@ import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelE
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.sqrt
 
 @AndroidEntryPoint
 class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
@@ -28,15 +33,17 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
 
     private val viewModel: NewsHeadlineViewModel by viewModels()
 
+    private var title = "News"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().title = "News"
+        requireActivity().title = title
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeStates()
+        createSearchView()
     }
 
     override fun onCreateView(
@@ -51,7 +58,7 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
 
     override fun onResume() {
         super.onResume()
-        requireActivity().title = "News"
+        requireActivity().title = title
     }
 
     private fun setupRecyclerView() {
@@ -86,9 +93,85 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
     }
 
     private fun observeStates() {
-       collectLatestLiveCycleFlow(viewModel.articleList){
-           adapter.articleList = it
-       }
+        collectLatestLiveCycleFlow(viewModel.articleList) {
+            adapter.articleList = it
+        }
     }
 
+    //   https://pluu.github.io/blog/android/2021/09/06/menuhost/
+    // https://www.tutorialsbuzz.com/2020/09/Android-SearchView-ActionBar-toolbar-Kotlin.html
+    private fun createSearchView() {
+
+
+        val menuProvider = object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.action_menu_fragment_news_headlines, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.action_search -> {
+
+                        val searchView = menuItem.actionView as SearchView
+
+                        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                            override fun onQueryTextSubmit(query: String): Boolean {
+//                        https://stackoverflow.com/questions/17506230/how-do-i-close-a-searchview-programmatically
+                                menuItem.collapseActionView()
+                               title = query
+                                requireActivity().title = query
+                                viewModel.sendEvent(
+                                    events = NewsHeadlineViewModelEvents.SearchNews(
+                                        query = query
+                                    )
+                                )
+                                return true
+                            }
+
+                            override fun onQueryTextChange(query: String): Boolean {
+                                Log.e("onQueryTextChange", "query: " + query)
+                                if (query.isNotEmpty() && query.isNotBlank()) {
+                                    title = query
+                                    requireActivity().title = query
+                                    viewModel.sendEvent(
+                                        events = NewsHeadlineViewModelEvents.SearchNews(
+                                            query = query
+                                        )
+                                    )
+                                }
+
+
+                                return true
+                            }
+                        })
+
+
+                        //Expand Collapse listener
+                        menuItem.setOnActionExpandListener(object :
+                            MenuItem.OnActionExpandListener {
+                            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                                showToast("Action Collapse")
+                                return true
+                            }
+
+                            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                                showToast("Action Expand")
+                                return true
+                            }
+
+                            fun showToast(msg: String) {
+                                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    }
+                }
+                return true
+            }
+        }
+
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(menuProvider, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
 }
+
+
