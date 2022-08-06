@@ -10,6 +10,9 @@ plugins {
 android {
     compileSdk 32
 
+    buildFeatures{
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.chaudharynabin6.newapp"
         minSdk 29
