@@ -24,6 +24,12 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     private lateinit var binding: FragmentSavedNewsBinding
 
     private val viewModel: SavedNewsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        changing the title of action bar
+        requireActivity().title = "Saved Title"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

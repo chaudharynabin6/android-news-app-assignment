@@ -28,6 +28,11 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
 
     private val viewModel: NewsHeadlineViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().title = "News"
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
