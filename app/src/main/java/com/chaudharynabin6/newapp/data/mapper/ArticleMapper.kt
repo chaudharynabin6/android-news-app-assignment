@@ -12,6 +12,7 @@ fun ArticleDto.toArticleEntity(): ArticleEntity? {
     val author = author ?: return null
     val urlToImage = urlToImage ?: return null
     return ArticleEntity(
+        id = this.hashCode(),
         author = author,
         content = content,
         description = description,

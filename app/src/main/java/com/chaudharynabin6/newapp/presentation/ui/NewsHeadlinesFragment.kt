@@ -1,64 +1,67 @@
 package com.chaudharynabin6.newapp.presentation.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaudharynabin6.newapp.R
-import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
-import com.chaudharynabin6.newapp.data.datasources.local.TitleEntityLocal
-import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
-import com.chaudharynabin6.newapp.data.mapper.toTitleEntity
-import com.chaudharynabin6.newapp.domain.repository.NewsRepository
-import com.chaudharynabin6.newapp.other.utils.Resource
+import com.chaudharynabin6.newapp.databinding.FragmentNewsHeadlinesBinding
+import com.chaudharynabin6.newapp.other.utils.collectLatestLiveCycleFlow
+import com.chaudharynabin6.newapp.other.utils.collectLiveCycleFlow
+import com.chaudharynabin6.newapp.presentation.adapters.ArticleAdapter
+import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
+import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelEvents
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
-    @Inject
-    lateinit var newsAPI: NewsAPI
 
     @Inject
-    lateinit var newsDataBase: NewsDataBase
+    lateinit var adapter: ArticleAdapter
 
-    @Inject
-    lateinit var newsRepository: NewsRepository
+    private lateinit var binding: FragmentNewsHeadlinesBinding
+
+    private val viewModel: NewsHeadlineViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewLifecycleOwner.lifecycleScope.launch {
-//            val data = newsAPI.getNews(q = "tesla")
-//            Log.e("news api", data.totalResults.toString())
-//            val articles = data.articles.mapNotNull {
-//                it.toArticleEntity()
-//            }
-//            Timber.e("articles : $articles")
-            val titleLocalEntity = TitleEntityLocal("test news tittle")
-//            newsDataBase.dao().insertTitle(titleLocalEntity)
+        setupRecyclerView()
+        observeStates()
+    }
 
-//            newsDataBase.dao().getAllTitleSortedByDateSavedDesc().collect(){
-//
-//                    Timber.e("title : $it")
-//
-//            }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
 
-//            newsRepository.getArticles(query = "tesla").collect(){
-//                Timber.e("$it")
-//                when(it){
-//                    is Resource.Success -> {
-//                        Timber.e("${it.data}")
-//                    }
-//                }
-//            }
+        binding = FragmentNewsHeadlinesBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-//            newsRepository.insertTitle(titleLocalEntity.toTitleEntity())
-//            newsRepository.getAllSavedTitles().collect(){
-//                Timber.e("$it")
-//            }
 
+    private fun setupRecyclerView() {
+        binding.nhRvArticle.let {
+            it.adapter = adapter
+            it.layoutManager = LinearLayoutManager(requireContext())
+        }
+        adapter.setOnItemClickListener {
+            viewModel.sendEvent(
+                events = NewsHeadlineViewModelEvents.SaveNews(articleEntity = it)
+            )
+            Snackbar.make(requireView(), "News Saved", Snackbar.LENGTH_LONG).show()
         }
     }
+
+    private fun observeStates() {
+       collectLatestLiveCycleFlow(viewModel.articleList){
+           adapter.articleList = it
+       }
+    }
+
 }
