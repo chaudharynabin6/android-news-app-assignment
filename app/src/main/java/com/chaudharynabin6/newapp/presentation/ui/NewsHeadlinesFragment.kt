@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.FragmentNewsHeadlinesBinding
 import com.chaudharynabin6.newapp.other.utils.collectLatestLiveCycleFlow
-import com.chaudharynabin6.newapp.other.utils.collectLiveCycleFlow
 import com.chaudharynabin6.newapp.presentation.adapters.ArticleAdapter
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelEvents
@@ -59,11 +59,17 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
 //            fixing the flicking of recycler view
             it.itemAnimator?.changeDuration = 0
         }
-        adapter.setOnItemClickListener {
+        adapter.setOnSavedButtonClickListener {
             viewModel.sendEvent(
                 events = NewsHeadlineViewModelEvents.SaveNews(articleEntity = it)
             )
             Snackbar.make(requireView(), "News Saved", Snackbar.LENGTH_LONG).show()
+        }
+
+        adapter.setOnItemClickListener {
+            val action =
+                NewsHeadlinesFragmentDirections.actionNewsHeadlinesFragmentToNewsDetailFragment(it.id)
+            findNavController().navigate(action)
         }
     }
 

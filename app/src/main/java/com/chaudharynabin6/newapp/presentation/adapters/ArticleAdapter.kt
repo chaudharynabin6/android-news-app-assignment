@@ -40,14 +40,19 @@ class ArticleAdapter @Inject constructor(
 //            button setup
             rvSaveButton.setOnClickListener {
 
-                onItemClickListener?.let { click ->
+                onSavedButtonClickListener?.let { click ->
                     click(article)
                 }
 //                it.isSelected = true : error because recycle view is recycled
 
             }
 
-
+            root.setOnClickListener {
+                onItemClickListener?.let {
+                    click ->
+                    click(article)
+                }
+            }
             rvSaveButton.isSelected = article.isSaved
 
 //            author
@@ -85,10 +90,18 @@ class ArticleAdapter @Inject constructor(
         set(value) = differ.submitList(value)
 
 
+    private var onSavedButtonClickListener: ((ArticleEntity) -> Unit)? = null
+
+    fun setOnSavedButtonClickListener(listener: (ArticleEntity) -> Unit) {
+        onSavedButtonClickListener = listener
+    }
+
+
     private var onItemClickListener: ((ArticleEntity) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (ArticleEntity) -> Unit) {
         onItemClickListener = listener
     }
+
 
 }

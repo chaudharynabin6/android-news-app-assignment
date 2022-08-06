@@ -10,12 +10,17 @@
         android:label="NewsHeadlinesFragment" >
         <action
             android:id="@+id/action_newsHeadlinesFragment_to_newsDetailFragment"
-            app:destination="@id/newsDetailFragment" />
+            app:destination="@id/newsDetailFragment"/>
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"
         android:name="com.chaudharynabin6.newapp.presentation.ui.NewsDetailFragment"
-        android:label="NewsDetailFragment" />
+        android:label="NewsDetailFragment" >
+        <argument
+            android:name="articleId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="com.chaudharynabin6.newapp.presentation.ui.SavedNewsFragment"
