@@ -18,7 +18,7 @@ fun ArticleDto.toArticleEntity(): ArticleEntity? {
         description = description,
         title = title,
         url = url,
-        urlToMage = urlToImage,
+        urlToImage = urlToImage,
         source = source.name,
         publishedAt = date
     )

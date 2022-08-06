@@ -35,7 +35,7 @@ class ArticleAdapter @Inject constructor(
         holder.binding.apply {
 
 //            image setup
-            glide.load(article.urlToMage).into(rvImage)
+            glide.load(article.urlToImage).into(rvImage)
 
 //            button setup
             rvSaveButton.setOnClickListener {

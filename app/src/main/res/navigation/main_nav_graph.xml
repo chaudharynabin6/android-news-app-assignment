@@ -15,11 +15,29 @@
     <fragment
         android:id="@+id/newsDetailFragment"
         android:name="com.chaudharynabin6.newapp.presentation.ui.NewsDetailFragment"
-        android:label="NewsDetailFragment" >
+        android:label="NewsDetailFragment">
         <argument
-            android:name="articleId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="author"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="publishedAt"
+            app:argType="string" />
+        <argument
+            android:name="urlToImage"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+
     </fragment>
     <fragment
         android:id="@+id/savedNewsFragment"

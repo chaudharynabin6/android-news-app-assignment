@@ -10,14 +10,15 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.FragmentNewsDetailBinding
-import com.chaudharynabin6.newapp.other.utils.collectLatestLiveCycleFlow
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
-
+//    info: nav safe args with parcelable
+//    https://www.raywenderlich.com/19327407-using-safe-args-with-the-android-navigation-component
+//    https://developer.android.com/guide/navigation/navigation-pass-data
     private val args: NewsDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentNewsDetailBinding
 
@@ -39,26 +40,24 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        collectLatestLiveCycleFlow(viewModel.articleList) { list ->
-            val articleEntity = list.find { it.id == args.articleId }
 
-            binding.apply {
-                articleEntity?.let { article ->
-                    glide.load(article.urlToMage).into(ndImage)
 
-                    ndAuthor.text = article.author
 
-                    ndDate.text = article.publishedAt.toString()
+        binding.apply {
 
-                    ndTitle.text = article.title
+            glide.load(args.urlToImage).into(ndImage)
 
-                    ndDescription.text = article.description
+            ndAuthor.text = args.author
 
-                    ndContent.text = article.content
+            ndDate.text = args.publishedAt
 
-                }
-            }
+            ndTitle.text = args.title
+
+            ndDescription.text = args.description
+
+            ndContent.text = args.content
 
         }
+
     }
 }

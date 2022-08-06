@@ -68,7 +68,15 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
 
         adapter.setOnItemClickListener {
             val action =
-                NewsHeadlinesFragmentDirections.actionNewsHeadlinesFragmentToNewsDetailFragment(it.id)
+                NewsHeadlinesFragmentDirections.actionNewsHeadlinesFragmentToNewsDetailFragment(
+                    id = it.id,
+                    author = it.author,
+                    description = it.description,
+                    publishedAt = it.publishedAt.toString(),
+                    urlToImage = it.urlToImage,
+                    content = it.content,
+                    title = it.title
+                )
             findNavController().navigate(action)
         }
     }
