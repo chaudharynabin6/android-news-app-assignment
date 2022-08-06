@@ -49,6 +49,10 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = "News"
+    }
 
     private fun setupRecyclerView() {
         binding.nhRvArticle.let {

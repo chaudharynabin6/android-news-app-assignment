@@ -36,6 +36,17 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        changing the title of action bar
+        requireActivity().title = "News Detail"
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = "News Detail"
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

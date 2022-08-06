@@ -30,6 +30,12 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 //        changing the title of action bar
         requireActivity().title = "Saved Title"
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().title = "Saved Title"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
