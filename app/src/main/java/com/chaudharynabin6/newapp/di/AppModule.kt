@@ -1,9 +1,12 @@
 package com.chaudharynabin6.newapp.di
 
+
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.AnimationDrawable
+import androidx.core.content.ContextCompat
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -50,7 +54,7 @@ object AppModule {
     @Singleton
     @Provides
     fun providesNewsDatabase(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): NewsDataBase {
         return Room.databaseBuilder(
             context,
@@ -64,13 +68,21 @@ object AppModule {
     fun provideGlideInstance(
         @ApplicationContext context: Context,
     ): RequestManager {
+        val animPlaceholder =
+            ContextCompat.getDrawable(context, R.drawable.loading_placeholder) as AnimationDrawable
+            animPlaceholder.start()
+
+
+
+
+
         return Glide.with(context).setDefaultRequestOptions(
             RequestOptions()
-                .placeholder(
-                    R.drawable.image_placeholder
-                )
+                .placeholder(animPlaceholder)
                 .error(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+
+
         )
     }
 
@@ -82,7 +94,7 @@ object AppModule {
     @Singleton
     @Provides
     fun providesSharedPreference(
-        @ApplicationContext context : Context
+        @ApplicationContext context: Context,
     ): SharedPreferences {
         return context.getSharedPreferences(AppConstants.SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
     }

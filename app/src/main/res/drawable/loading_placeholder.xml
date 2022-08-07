@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    https://stackoverflow.com/questions/27951712/android-animationdrawable-cast-error-->
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false"
+    >
+    <item android:drawable="@drawable/loadingframe1" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe2" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe3" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe4" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe5" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe6" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe7" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe8" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe9" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe10" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe11" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe12" android:duration="20" />
+    <item android:drawable="@drawable/loadingframe13" android:duration="20" />
+</animation-list>
