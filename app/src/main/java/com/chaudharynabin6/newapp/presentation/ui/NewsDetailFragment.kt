@@ -7,7 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.FragmentNewsDetailBinding
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
@@ -56,7 +62,36 @@ class NewsDetailFragment : Fragment(R.layout.fragment_news_detail) {
 
         binding.apply {
 
-            glide.load(args.urlToImage).into(ndImage)
+            Glide.with(requireContext()).addDefaultRequestListener(
+                object : RequestListener<Any> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Any>?,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+
+                        ndProgressBar.visibility = View.GONE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Any?,
+                        model: Any?,
+                        target: Target<Any>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean,
+                    ): Boolean {
+                        ndProgressBar.visibility = View.GONE
+                        return false
+                    }
+
+                }
+            ).setDefaultRequestOptions(
+                RequestOptions().error(
+                    R.drawable.image_placeholder
+                )
+            ).load(args.urlToImage).into(ndImage)
 
             ndAuthor.text = args.author
 

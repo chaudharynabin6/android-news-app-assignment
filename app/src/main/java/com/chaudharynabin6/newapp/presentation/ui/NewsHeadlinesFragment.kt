@@ -108,6 +108,9 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         collectLatestLiveCycleFlow(viewModel.articleList) {
             adapter.articleList = it
         }
+        collectLatestLiveCycleFlow(viewModel.isLoading) {
+            binding.nhProgressIndicator.visibility = if (it) View.VISIBLE else View.GONE
+        }
     }
 
     //   https://pluu.github.io/blog/android/2021/09/06/menuhost/
