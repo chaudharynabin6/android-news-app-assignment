@@ -68,7 +68,7 @@ object AppModule {
                     R.drawable.image_placeholder
                 )
                 .error(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
         )
     }
 
