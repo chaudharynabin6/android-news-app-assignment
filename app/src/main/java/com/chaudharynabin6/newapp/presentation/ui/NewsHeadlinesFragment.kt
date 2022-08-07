@@ -21,7 +21,6 @@ import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelE
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.math.sqrt
 
 @AndroidEntryPoint
 class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
@@ -72,7 +71,7 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         }
         adapter.setOnSavedButtonClickListener {
             viewModel.sendEvent(
-                events = NewsHeadlineViewModelEvents.SaveNews(articleEntity = it)
+                event = NewsHeadlineViewModelEvents.SaveNews(articleEntity = it)
             )
             Snackbar.make(requireView(), "News Saved", Snackbar.LENGTH_LONG).show()
         }
@@ -121,7 +120,7 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
                                title = query
                                 requireActivity().title = query
                                 viewModel.sendEvent(
-                                    events = NewsHeadlineViewModelEvents.SearchNews(
+                                    event = NewsHeadlineViewModelEvents.SearchNews(
                                         query = query
                                     )
                                 )
@@ -134,7 +133,7 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
                                     title = query
                                     requireActivity().title = query
                                     viewModel.sendEvent(
-                                        events = NewsHeadlineViewModelEvents.SearchNews(
+                                        event = NewsHeadlineViewModelEvents.SearchNews(
                                             query = query
                                         )
                                     )

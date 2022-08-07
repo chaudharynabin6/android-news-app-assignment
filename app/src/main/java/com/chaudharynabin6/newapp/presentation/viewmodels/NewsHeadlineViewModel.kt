@@ -2,6 +2,8 @@ package com.chaudharynabin6.newapp.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chaudharynabin6.newapp.data.mapper.toArticleEntity
+import com.chaudharynabin6.newapp.data.mapper.toArticleEntityLocal
 import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import com.chaudharynabin6.newapp.domain.entity.TitleEntity
 import com.chaudharynabin6.newapp.domain.repository.NewsRepository
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 //https://proandroiddev.com/no-more-livedata-in-your-repository-there-are-better-options-25a7557b0730
@@ -34,7 +35,7 @@ class NewsHeadlineViewModel @Inject constructor(
     val articleList = _articleList.asStateFlow()
 
     init {
-        sendEvent(NewsHeadlineViewModelEvents.SearchNews("tesla"))
+        sendEvent(event = NewsHeadlineViewModelEvents.LoadCachedNews)
     }
 
     var job: Job? = null
@@ -52,6 +53,9 @@ class NewsHeadlineViewModel @Inject constructor(
                         is Resource.Success -> {
                             resource.data?.let {
                                 _articleList.emit(it)
+                                sendEvent(
+                                    event = NewsHeadlineViewModelEvents.CacheLastNews(it)
+                                )
                             }
                         }
                         is Resource.Error -> {
@@ -95,31 +99,55 @@ class NewsHeadlineViewModel @Inject constructor(
 
     }
 
-    fun sendEvent(events: NewsHeadlineViewModelEvents) {
-        when (events) {
+    fun sendEvent(event: NewsHeadlineViewModelEvents) {
+        when (event) {
             is NewsHeadlineViewModelEvents.SearchNews -> {
                 searchNews(
-                    query = events.query
+                    query = event.query
                 )
             }
             is NewsHeadlineViewModelEvents.SaveNews -> {
                 saveNews(
-                    articleEntity = events.articleEntity
+                    articleEntity = event.articleEntity
                 )
                 changeSaveIconColor(
-                    articleEntity = events.articleEntity
+                    articleEntity = event.articleEntity
                 )
 
+            }
+            is NewsHeadlineViewModelEvents.CacheLastNews -> {
+                cacheLastNews(event.articles)
+            }
+            is NewsHeadlineViewModelEvents.LoadCachedNews -> {
+                loadCachedNews()
             }
         }
     }
 
+    private fun cacheLastNews(articles: List<ArticleEntity>) {
+        viewModelScope.launch(dispatcher) {
+            repository.deleteAllArticles()
+            repository.insertArticles(
+                articles.map { entity -> entity.toArticleEntityLocal() }
+            )
 
+        }
+    }
+
+    private fun loadCachedNews() {
+        viewModelScope.launch(dispatcher) {
+            val listArticleEntityLocal = repository.getAllArticles()
+            val articles = listArticleEntityLocal.map { it.toArticleEntity() }
+            _articleList.emit(articles)
+        }
+    }
 }
 
 sealed class NewsHeadlineViewModelEvents() {
     data class SearchNews(val query: String) : NewsHeadlineViewModelEvents()
     data class SaveNews(val articleEntity: ArticleEntity) : NewsHeadlineViewModelEvents()
+    data class CacheLastNews(val articles: List<ArticleEntity>) : NewsHeadlineViewModelEvents()
+    object LoadCachedNews : NewsHeadlineViewModelEvents()
 }
 
 
