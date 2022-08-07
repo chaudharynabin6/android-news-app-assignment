@@ -68,21 +68,12 @@ object AppModule {
     fun provideGlideInstance(
         @ApplicationContext context: Context,
     ): RequestManager {
-        val animPlaceholder =
-            ContextCompat.getDrawable(context, R.drawable.loading_placeholder) as AnimationDrawable
-            animPlaceholder.start()
-
-
-
-
 
         return Glide.with(context).setDefaultRequestOptions(
             RequestOptions()
-                .placeholder(animPlaceholder)
+                .placeholder(R.drawable.rotated_progress_bar)
                 .error(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-
-
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
         )
     }
 

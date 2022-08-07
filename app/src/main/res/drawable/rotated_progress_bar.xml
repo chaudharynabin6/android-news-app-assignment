@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    https://stackoverflow.com/questions/35305875/progress-bar-while-loading-image-using-glide-->
+<animated-rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/circular_progress"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    >
+</animated-rotate>
