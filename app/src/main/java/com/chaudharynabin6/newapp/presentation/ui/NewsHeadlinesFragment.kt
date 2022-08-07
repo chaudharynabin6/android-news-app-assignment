@@ -1,5 +1,6 @@
 package com.chaudharynabin6.newapp.presentation.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.FragmentNewsHeadlinesBinding
+import com.chaudharynabin6.newapp.other.AppConstants
 import com.chaudharynabin6.newapp.other.utils.collectLatestLiveCycleFlow
 import com.chaudharynabin6.newapp.presentation.adapters.ArticleAdapter
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
@@ -21,6 +23,7 @@ import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelE
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
@@ -28,13 +31,23 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
     @Inject
     lateinit var adapter: ArticleAdapter
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var binding: FragmentNewsHeadlinesBinding
 
     private val viewModel: NewsHeadlineViewModel by viewModels()
 
-    private var title = "News"
+    private var title: String by Delegates.observable("News") { _, _, newValue ->
+        sharedPreferences.edit()
+            .putString(AppConstants.TITLE_KEY, newValue)
+            .apply()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        title = "${sharedPreferences.getString(AppConstants.TITLE_KEY, "")}"
+        title = if(title == "") "News" else title
         requireActivity().title = title
     }
 
@@ -117,8 +130,8 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
                             override fun onQueryTextSubmit(query: String): Boolean {
 //                        https://stackoverflow.com/questions/17506230/how-do-i-close-a-searchview-programmatically
                                 menuItem.collapseActionView()
-                               title = query
-                                requireActivity().title = query
+                                title = "$query news"
+                                requireActivity().title = "$query news"
                                 viewModel.sendEvent(
                                     event = NewsHeadlineViewModelEvents.SearchNews(
                                         query = query
@@ -130,8 +143,8 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
                             override fun onQueryTextChange(query: String): Boolean {
                                 Log.e("onQueryTextChange", "query: " + query)
                                 if (query.isNotEmpty() && query.isNotBlank()) {
-                                    title = query
-                                    requireActivity().title = query
+                                    title = "$query news"
+                                    requireActivity().title = "$query news"
                                     viewModel.sendEvent(
                                         event = NewsHeadlineViewModelEvents.SearchNews(
                                             query = query

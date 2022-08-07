@@ -1,6 +1,7 @@
 package com.chaudharynabin6.newapp.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
@@ -10,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
 import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
+import com.chaudharynabin6.newapp.other.AppConstants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -75,5 +77,13 @@ object AppModule {
     @Provides
     fun providesDispatcher(): CoroutineDispatcher {
         return Dispatchers.Default
+    }
+
+    @Singleton
+    @Provides
+    fun providesSharedPreference(
+        @ApplicationContext context : Context
+    ): SharedPreferences {
+        return context.getSharedPreferences(AppConstants.SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
     }
 }
