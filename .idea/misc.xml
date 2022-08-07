@@ -15,9 +15,10 @@
         <entry key="app/src/main/res/drawable/line.xml" value="0.3205" />
         <entry key="app/src/main/res/drawable/loading_placeholder.xml" value="0.1415" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.3205" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12760416666666666" />
         <entry key="app/src/main/res/layout/fragment_news.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/layout/fragment_news_detail.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_news_headlines.xml" value="0.32708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_news_headlines.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_saved_news.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/layout/news_detail.xml" value="0.33" />
         <entry key="app/src/main/res/layout/news_item_layout.xml" value="0.33" />

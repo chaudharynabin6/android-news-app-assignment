@@ -17,6 +17,7 @@ import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.FragmentNewsHeadlinesBinding
 import com.chaudharynabin6.newapp.other.AppConstants
 import com.chaudharynabin6.newapp.other.utils.collectLatestLiveCycleFlow
+import com.chaudharynabin6.newapp.other.utils.collectLiveCycleFlow
 import com.chaudharynabin6.newapp.presentation.adapters.ArticleAdapter
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModel
 import com.chaudharynabin6.newapp.presentation.viewmodels.NewsHeadlineViewModelEvents
@@ -86,7 +87,7 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
             viewModel.sendEvent(
                 event = NewsHeadlineViewModelEvents.SaveNews(articleEntity = it)
             )
-            Snackbar.make(requireView(), "News Saved", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.ndCLayout, "News Saved", Snackbar.LENGTH_LONG).show()
         }
 
         adapter.setOnItemClickListener {
@@ -111,6 +112,13 @@ class NewsHeadlinesFragment : Fragment(R.layout.fragment_news_headlines) {
         collectLatestLiveCycleFlow(viewModel.isLoading) {
             binding.nhProgressIndicator.visibility = if (it) View.VISIBLE else View.GONE
         }
+
+        collectLiveCycleFlow(viewModel.errorMessage) {
+            Snackbar.make(
+                requireActivity().requireViewById(R.id.ac_c_layout), it, Snackbar.LENGTH_SHORT
+            ).show()
+        }
+
     }
 
     //   https://pluu.github.io/blog/android/2021/09/06/menuhost/

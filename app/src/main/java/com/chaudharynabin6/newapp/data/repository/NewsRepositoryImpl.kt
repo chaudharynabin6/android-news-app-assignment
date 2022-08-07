@@ -41,8 +41,6 @@ class NewsRepositoryImpl @Inject constructor(
                 emit(Resource.Success(
                     articleEntities
                 ))
-
-
             }
             catch (e : HttpException){
                 e.printStackTrace()
@@ -53,7 +51,7 @@ class NewsRepositoryImpl @Inject constructor(
             catch (e: Exception) {
                 e.printStackTrace()
                 emit(Resource.Error(
-                    message = "unknown exception occurred"
+                    message = "unknown Error occurred"
                 ))
             }
 
