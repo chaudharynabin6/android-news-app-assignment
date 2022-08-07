@@ -26,7 +26,6 @@ fun ArticleDto.toArticleEntity(): ArticleEntity? {
 
 fun ArticleEntity.toArticleEntityLocal(): ArticleEntityLocal {
     return ArticleEntityLocal(
-        id = id,
         author = author,
         content = content,
         description = description,
