@@ -5,10 +5,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [TitleEntityLocal::class],
+    entities = [TitleEntityLocal::class,ArticleEntityLocal::class],
     version = 1
 )
 @TypeConverters(DateTypeConverter::class)
 abstract class NewsDataBase :RoomDatabase() {
-        abstract fun dao() : TitleDao
+        abstract fun titleDao() : TitleDao
+        abstract fun articleDao() :ArticleDao
 }

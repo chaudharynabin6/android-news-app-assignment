@@ -1,5 +1,6 @@
 package com.chaudharynabin6.newapp.data.repository
 
+import com.chaudharynabin6.newapp.data.datasources.local.ArticleEntityLocal
 import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
 import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
 import com.chaudharynabin6.newapp.data.mapper.toArticleEntity
@@ -9,8 +10,6 @@ import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import com.chaudharynabin6.newapp.domain.entity.TitleEntity
 import com.chaudharynabin6.newapp.domain.repository.NewsRepository
 import com.chaudharynabin6.newapp.other.utils.Resource
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +21,8 @@ class NewsRepositoryImpl @Inject constructor(
     private val newsDataBase: NewsDataBase,
 ) : NewsRepository {
 
-    private val dao = newsDataBase.dao()
+    private val titleDao = newsDataBase.titleDao()
+    private val articleDao = newsDataBase.articleDao()
 
     override suspend fun getArticles(query: String): Flow<Resource<List<ArticleEntity>>> {
 
@@ -65,7 +65,7 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllSavedTitles(): Flow<List<TitleEntity>> {
-        val titleEntityLocals =  dao.getAllTitleSortedByDateSavedDesc()
+        val titleEntityLocals =  titleDao.getAllTitleSortedByDateSavedDesc()
 
         return  titleEntityLocals.map {
             listTitleEntityLocal ->
@@ -76,6 +76,18 @@ class NewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertTitle(titleEntity: TitleEntity) {
-        dao.insertTitle(titleEntity.toTitleEntityLocal())
+        titleDao.insertTitle(titleEntity.toTitleEntityLocal())
+    }
+
+    override suspend fun insertArticles(articleEntityLocals: List<ArticleEntityLocal>) {
+        articleDao.insertArticles(articleEntityLocals)
+    }
+
+    override suspend fun deleteAllArticles() {
+        articleDao.deleteAllArticles()
+    }
+
+    override suspend fun getAllArticles(): List<ArticleEntityLocal> {
+       return articleDao.getAllArticles()
     }
 }

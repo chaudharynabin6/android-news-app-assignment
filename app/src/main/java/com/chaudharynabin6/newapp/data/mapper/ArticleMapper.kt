@@ -1,5 +1,6 @@
 package com.chaudharynabin6.newapp.data.mapper
 
+import com.chaudharynabin6.newapp.data.datasources.local.ArticleEntityLocal
 import com.chaudharynabin6.newapp.data.datasources.remote.dto.ArticleDto
 import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import java.time.Instant
@@ -20,5 +21,35 @@ fun ArticleDto.toArticleEntity(): ArticleEntity? {
         urlToImage = urlToImage,
         source = source?.name ?: "",
         publishedAt = date ?: return null
+    )
+}
+
+fun ArticleEntity.toArticleEntityLocal(): ArticleEntityLocal {
+    return ArticleEntityLocal(
+        id = id,
+        author = author,
+        content = content,
+        description = description,
+        title = title,
+        url = url,
+        urlToImage = urlToImage,
+        source = source,
+        publishedDate = publishedAt,
+        isSaved = isSaved
+    )
+}
+
+fun ArticleEntityLocal.toArticleEntity(): ArticleEntity {
+    return ArticleEntity(
+        id = id!!,
+        author = author,
+        content = content,
+        description = description,
+        title = title,
+        url = url,
+        urlToImage = urlToImage,
+        source = source,
+        publishedAt = publishedDate,
+        isSaved = isSaved
     )
 }
