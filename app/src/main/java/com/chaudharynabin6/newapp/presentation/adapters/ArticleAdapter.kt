@@ -7,16 +7,17 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.databinding.RvArticleItemLayoutBinding
 import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import javax.inject.Inject
 
 
-class ArticleAdapter @Inject constructor(
-    private val glide: RequestManager,
-) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
+class ArticleAdapter @Inject constructor() :
+    RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(val binding: RvArticleItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -38,7 +39,15 @@ class ArticleAdapter @Inject constructor(
         holder.binding.apply {
 
 //            image setup
-            glide.load(article.urlToImage).into(rvImage)
+            Glide.with(
+                holder.itemView
+            ).setDefaultRequestOptions(
+                RequestOptions()
+                    .placeholder(R.drawable.rotated_progress_bar)
+                    .error(R.drawable.image_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+            ).load(article.urlToImage)
+                .into(rvImage)
 
 //            button setup
             rvSaveButton.setOnClickListener {
