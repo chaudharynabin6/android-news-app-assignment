@@ -1,11 +1,8 @@
 package com.chaudharynabin6.newapp.di
 
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.AnimationDrawable
-import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -15,6 +12,11 @@ import com.chaudharynabin6.newapp.R
 import com.chaudharynabin6.newapp.data.datasources.local.NewsDataBase
 import com.chaudharynabin6.newapp.data.datasources.remote.NewsAPI
 import com.chaudharynabin6.newapp.other.AppConstants
+import com.chaudharynabin6.newapp.other.network.okhttp.interceptors.ErrorHandlerInterceptor
+import com.chaudharynabin6.newapp.other.utils.ShowToast
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.chuckerteam.chucker.api.RetentionManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -24,6 +26,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -35,8 +39,47 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providesNewsAPI(
+    fun providesOkhttpClient(
+        @ApplicationContext context: Context,
+        showToast: ShowToast,
+    ): OkHttpClient {
+        // Create the Collector
+        val chuckerCollector = ChuckerCollector(
+            context = context,
+            // Toggles visibility of the notification
+            showNotification = true,
+            // Allows to customize the retention period of collected data
+            retentionPeriod = RetentionManager.Period.ONE_HOUR
+        )
+        return OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BASIC)
+            })
+            .addInterceptor(ErrorHandlerInterceptor(context = context, showToast = showToast))
+            .addInterceptor(
+                ChuckerInterceptor.Builder(context)
+                    .collector(chuckerCollector)
+                    .maxContentLength(250000L)
+                    .redactHeaders(emptySet())
+                    .alwaysReadResponseBody(false)
+                    .build()
+            )
+            .build()
+    }
 
+
+    @Singleton
+    @Provides
+    fun provideShowToast(
+        @ApplicationContext context: Context,
+    ): ShowToast {
+        return ShowToast(context)
+    }
+
+    @Singleton
+    @Provides
+    fun providesNewsAPI(
+        client: OkHttpClient,
     ): NewsAPI {
 //        https://stackoverflow.com/questions/70684744/api-call-failed-unable-to-create-converter-for-class-retrofit-moshi
 //        https://proandroiddev.com/goodbye-gson-hello-moshi-4e591116231e
@@ -45,6 +88,7 @@ object AppModule {
                 .addLast(KotlinJsonAdapterFactory())
                 .build()
         return Retrofit.Builder()
+            .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(NewsAPI.BASE_URL)
             .build()
@@ -87,6 +131,9 @@ object AppModule {
     fun providesSharedPreference(
         @ApplicationContext context: Context,
     ): SharedPreferences {
-        return context.getSharedPreferences(AppConstants.SHARED_PREFERENCE_NAME,Context.MODE_PRIVATE)
+        return context.getSharedPreferences(
+            AppConstants.SHARED_PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
     }
 }

@@ -10,6 +10,8 @@ import com.chaudharynabin6.newapp.domain.entity.ArticleEntity
 import com.chaudharynabin6.newapp.domain.entity.TitleEntity
 import com.chaudharynabin6.newapp.domain.repository.NewsRepository
 import com.chaudharynabin6.newapp.other.utils.Resource
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -42,17 +44,18 @@ class NewsRepositoryImpl @Inject constructor(
                     articleEntities
                 ))
             }
-            catch (e : HttpException){
-                e.printStackTrace()
-                emit(Resource.Error(
-                    message = "network error"
-                ))
-            }
+//            catch (e : HttpException){
+//                e.printStackTrace()
+//                emit(Resource.Error(
+//                    message = "network error"
+//                ))
+//            }
             catch (e: Exception) {
                 e.printStackTrace()
                 emit(Resource.Error(
                     message = "unknown Error occurred"
                 ))
+                if(e is CancellationException) throw  e
             }
 
 
